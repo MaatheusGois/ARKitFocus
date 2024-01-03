@@ -163,6 +163,8 @@ extension SCNVector3 {
 	}
 }
 
+public let SCNVector3One: SCNVector3 = SCNVector3(1.0, 1.0, 1.0)
+
 func SCNVector3Uniform(_ value: Float) -> SCNVector3 {
 	return SCNVector3Make(value, value, value)
 }

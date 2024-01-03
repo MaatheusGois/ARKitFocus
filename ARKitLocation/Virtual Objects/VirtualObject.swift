@@ -5,6 +5,9 @@
 //  Created by Matheus Gois on 03/01/24.
 //
 
+import UIKit
+import ARKit
+
 class VirtualObject: SCNNode {
 	static let ROOT_NAME = "Virtual object root node"
 	var fileExtension: String = ""
@@ -68,14 +71,14 @@ class VirtualObject: SCNNode {
 			return
 		}
 		let result = controller.worldPositionFromScreenPosition(
-            pos, 
+            pos,
             objectPos: position,
             infinitePlane: infinitePlane
         )
 
 		controller.moveVirtualObjectToPosition(
             result.position,
-            instantly, 
+            instantly,
             !result.hitAPlane
         )
 	}
