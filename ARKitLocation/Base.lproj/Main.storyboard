@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2ib-Pv-c29">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Main View Controller-->
+        <scene sceneID="oXp-i1-J4W">
+            <objects>
+                <viewController id="2ib-Pv-c29" customClass="MainViewController" customModule="ARKitProject" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1Wn-xT-3We">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <sceneKitView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iAV-SJ-RBL" customClass="ARSCNView">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                            </sceneKitView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="51j-2C-gwe" userLabel="Add Content Button Hit Area">
+                                <rect key="frame" x="164.66666666666666" y="788" width="64" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="kGA-96-9Pg"/>
+                                    <constraint firstAttribute="width" constant="64" id="vOJ-55-lZV"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="chooseObject:" destination="2ib-Pv-c29" eventType="touchUpInside" id="1eZ-re-D1T"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOD-yu-bLj" userLabel="Add Object Button">
+                                <rect key="frame" x="172.66666666666666" y="755" width="48" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="ool-c9-SVD"/>
+                                    <constraint firstAttribute="width" constant="48" id="v0h-7l-smi"/>
+                                </constraints>
+                                <state key="normal" image="add">
+                                    <color key="titleColor" red="0.85882352939999995" green="0.72941176470000002" blue="0.22352941179999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="chooseObject:" destination="2ib-Pv-c29" eventType="touchUpInside" id="0P4-jm-0Dx"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfp-uF-Z30" userLabel="Restart Experience Button Hit Area">
+                                <rect key="frame" x="363" y="0.0" width="30" height="90"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="90" id="AXv-Yx-g9p"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="restartExperience:" destination="2ib-Pv-c29" eventType="touchUpInside" id="r3s-KP-kNH"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOP-zW-LmK" userLabel="Restart Experience Button Icon">
+                                <rect key="frame" x="358" y="79" width="20" height="23"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="23" id="VBD-bZ-ey8"/>
+                                    <constraint firstAttribute="width" constant="20" id="jWV-AD-IJQ"/>
+                                </constraints>
+                                <state key="normal" image="restart"/>
+                                <state key="selected" image="restartPressed"/>
+                                <state key="highlighted" image="restartPressed"/>
+                                <connections>
+                                    <action selector="restartExperience:" destination="2ib-Pv-c29" eventType="touchUpInside" id="k6v-90-8Uj"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="P8V-Vx-23L"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="DOP-zW-LmK" firstAttribute="top" secondItem="P8V-Vx-23L" secondAttribute="top" constant="20" id="39e-KA-SKf"/>
+                            <constraint firstItem="P8V-Vx-23L" firstAttribute="trailing" secondItem="iAV-SJ-RBL" secondAttribute="trailing" id="CXT-C7-6x2"/>
+                            <constraint firstItem="gfp-uF-Z30" firstAttribute="top" secondItem="iAV-SJ-RBL" secondAttribute="top" id="Crw-QE-G7F"/>
+                            <constraint firstItem="DOD-yu-bLj" firstAttribute="centerX" secondItem="P8V-Vx-23L" secondAttribute="centerX" id="Hw8-Ta-HqM"/>
+                            <constraint firstItem="51j-2C-gwe" firstAttribute="bottom" secondItem="iAV-SJ-RBL" secondAttribute="bottom" id="Wd2-pf-N4O"/>
+                            <constraint firstItem="DOP-zW-LmK" firstAttribute="trailing" secondItem="iAV-SJ-RBL" secondAttribute="trailing" constant="-15" id="ZLh-RO-36f"/>
+                            <constraint firstItem="iAV-SJ-RBL" firstAttribute="leading" secondItem="P8V-Vx-23L" secondAttribute="leading" id="ely-LL-0Dx"/>
+                            <constraint firstItem="iAV-SJ-RBL" firstAttribute="top" secondItem="1Wn-xT-3We" secondAttribute="top" id="fxf-ml-wuW"/>
+                            <constraint firstItem="gfp-uF-Z30" firstAttribute="trailing" secondItem="iAV-SJ-RBL" secondAttribute="trailing" id="kVm-Pt-feH"/>
+                            <constraint firstItem="51j-2C-gwe" firstAttribute="centerX" secondItem="iAV-SJ-RBL" secondAttribute="centerX" id="nRi-az-WWj"/>
+                            <constraint firstAttribute="bottom" secondItem="iAV-SJ-RBL" secondAttribute="bottom" id="yD5-ja-6RW"/>
+                            <constraint firstItem="P8V-Vx-23L" firstAttribute="bottom" secondItem="DOD-yu-bLj" secondAttribute="bottom" constant="15" id="zvF-SQ-053"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="addObjectButton" destination="DOD-yu-bLj" id="OyZ-yH-Rnv"/>
+                        <outlet property="restartExperienceButton" destination="DOP-zW-LmK" id="D3W-tq-JMQ"/>
+                        <outlet property="sceneView" destination="iAV-SJ-RBL" id="enr-qT-71G"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9aM-dK-FGK" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-818" y="-45"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="add" width="48" height="48"/>
+        <image name="restart" width="20" height="23"/>
+        <image name="restartPressed" width="20" height="23"/>
+    </resources>
+</document>
