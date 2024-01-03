@@ -1,49 +1,48 @@
 //
-//  AppDelegate.swift
+//  VirtualObjectsManager.swift
 //  ARKitLocation
 //
 //  Created by Matheus Gois on 03/01/24.
 //
 
 import Foundation
-import os.log
 
 class VirtualObjectsManager {
 
-	static let shared = VirtualObjectsManager()
+    static let shared = VirtualObjectsManager()
 
-	// AutoIncrement Unique Id
-	private var nextID = 1
-	func generateUid() -> Int {
-		nextID += 1
-		return nextID
-	}
+    // AutoIncrement Unique Id
+    private var nextID = 1
+    func generateUid() -> Int {
+        nextID += 1
+        return nextID
+    }
 
-	private var virtualObjects: [VirtualObject] = [VirtualObject]()
-	private var virtualObjectSelected: VirtualObject?
+    private var virtualObjects = [VirtualObject]()
+    private var virtualObjectSelected: VirtualObject?
 
-	func addVirtualObject(virtualObject: VirtualObject) {
-		virtualObjects.append(virtualObject)
-	}
+    func addVirtualObject(virtualObject: VirtualObject) {
+        virtualObjects.append(virtualObject)
+    }
 
-	func resetVirtualObjects() {
-		for object in virtualObjects {
-			object.unloadModel()
-			object.removeFromParentNode()
-		}
-		virtualObjectSelected = nil
-		virtualObjects = []
-	}
+    func resetVirtualObjects() {
+        for object in virtualObjects {
+            object.unloadModel()
+            object.removeFromParentNode()
+        }
+        virtualObjectSelected = nil
+        virtualObjects = []
+    }
 
-	func isAVirtualObjectPlaced() -> Bool {
-		return virtualObjectSelected != nil
-	}
+    func isAVirtualObjectPlaced() -> Bool {
+        virtualObjectSelected != nil
+    }
 
-	func setVirtualObjectSelected(virtualObject: VirtualObject) {
-		self.virtualObjectSelected = virtualObject
-	}
+    func setVirtualObjectSelected(virtualObject: VirtualObject) {
+        virtualObjectSelected = virtualObject
+    }
 
-	func getVirtualObjectSelected() -> VirtualObject? {
-		return self.virtualObjectSelected
-	}
+    func getVirtualObjectSelected() -> VirtualObject? {
+        virtualObjectSelected
+    }
 }
