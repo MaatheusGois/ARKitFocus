@@ -11,7 +11,7 @@ import UIKit
 
 final class MainViewController: UIViewController {
 
-    private let sceneView = FocusARSCNView()
+    private let sceneView = FocusARSCNView(object: Vase())
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -76,6 +76,7 @@
 		2E430BC42B4626B80002C455 /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				2EB195832B452C49007C0741 /* MainViewController.swift */,
 				2EB1957E2B452C49007C0741 /* Vase.swift */,
 			);
 			path = Example;
@@ -101,7 +102,6 @@
 			isa = PBXGroup;
 			children = (
 				2EB195682B452BE6007C0741 /* AppDelegate.swift */,
-				2EB195832B452C49007C0741 /* MainViewController.swift */,
 				2E430BC32B4619390002C455 /* Extensions */,
 				2EB1957F2B452C49007C0741 /* UI Elements */,
 				2EB1957C2B452C49007C0741 /* Virtual Objects */,

@@ -9,10 +9,13 @@ import Foundation
 
 final class VirtualObjectsManager {
 
-    static let shared = VirtualObjectsManager()
-
     private var virtualObjects = [VirtualObject]()
-    private var virtualObjectSelected: VirtualObject?
+
+    var selected: VirtualObject?
+
+    init(selected: VirtualObject? = nil) {
+        self.selected = selected
+    }
 
     func addVirtualObject(virtualObject: VirtualObject) {
         virtualObjects.append(virtualObject)
@@ -23,19 +26,6 @@ final class VirtualObjectsManager {
             object.unloadModel()
             object.removeFromParentNode()
         }
-        virtualObjectSelected = nil
         virtualObjects = []
-    }
-
-    func isAVirtualObjectPlaced() -> Bool {
-        virtualObjectSelected != nil
-    }
-
-    func setVirtualObjectSelected(virtualObject: VirtualObject) {
-        virtualObjectSelected = virtualObject
-    }
-
-    func getVirtualObjectSelected() -> VirtualObject? {
-        virtualObjectSelected
     }
 }

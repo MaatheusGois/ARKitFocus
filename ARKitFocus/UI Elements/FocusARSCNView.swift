@@ -37,17 +37,21 @@ final class FocusARSCNView: ARSCNView {
         static let defaultDistanceCameraToObjects: Float = 10
     }
 
-    lazy var addObjectButton = buildAddButton()
-    lazy var restartExperienceButton = buildResetButton()
+    private lazy var addObjectButton = buildAddButton()
+    private lazy var restartExperienceButton = buildResetButton()
+
+    private let objectManager: VirtualObjectsManager
 
     // Add any custom properties or methods here
 
-    required init() {
+    required init(object: VirtualObject) {
+        self.objectManager = .init(selected: object)
         super.init(frame: .zero, options: [:])
         setupUI()
     }
 
     required init?(coder aDecoder: NSCoder) {
+        self.objectManager = .init()
         super.init(coder: aDecoder)
         setupUI()
     }
@@ -55,7 +59,6 @@ final class FocusARSCNView: ARSCNView {
     func viewDidLoad() {
         setupScene()
         setupFocusSquare()
-        resetVirtualObject()
     }
 
     func viewDidAppear(_ animated: Bool) {
@@ -185,10 +188,9 @@ extension FocusARSCNView {
     private func updateFocusSquare() {
         guard let screenCenter else { return }
 
-        let virtualObject = VirtualObjectsManager.shared.getVirtualObjectSelected()
         if
-            virtualObject != nil,
-            isNode(virtualObject!, insideFrustumOf: pointOfView!) {
+            let virtualObject = objectManager.selected,
+            isNode(virtualObject, insideFrustumOf: pointOfView!) {
             focusSquare?.hide()
         } else {
             focusSquare?.unhide()
@@ -222,7 +224,7 @@ extension FocusARSCNView {
             self.setupFocusSquare()
             self.restartPlaneDetection()
 
-            VirtualObjectsManager.shared.resetVirtualObjects()
+            self.objectManager.resetVirtualObjects()
 
             // Disable Restart button for five seconds in order to give the session enough time to restart.
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
@@ -309,12 +311,8 @@ extension FocusARSCNView {
 
 extension FocusARSCNView {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let object = VirtualObjectsManager.shared.getVirtualObjectSelected() else {
-            return
-        }
-
-        if currentGesture == nil {
-            currentGesture = Gesture.startGestureFromTouches(touches, self, object)
+        if let selected = objectManager.selected, currentGesture == nil {
+            currentGesture = Gesture.startGestureFromTouches(touches, self, selected)
         } else {
             currentGesture = currentGesture?.updateGestureFromTouches(touches, .touchBegan)
         }
@@ -323,9 +321,6 @@ extension FocusARSCNView {
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if !VirtualObjectsManager.shared.isAVirtualObjectPlaced() {
-            return
-        }
         currentGesture = currentGesture?.updateGestureFromTouches(touches, .touchMoved)
         displayVirtualObjectTransform()
     }
@@ -335,9 +330,6 @@ extension FocusARSCNView {
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if !VirtualObjectsManager.shared.isAVirtualObjectPlaced() {
-            return
-        }
         currentGesture = currentGesture?.updateGestureFromTouches(touches, .touchCancelled)
     }
 }
@@ -346,7 +338,8 @@ extension FocusARSCNView {
 
 extension FocusARSCNView {
 
-    func loadVirtualObject(object: VirtualObject = Vase()) {
+    func loadVirtualObject() {
+        guard let object = objectManager.selected?.copy() as? VirtualObject else { return }
         // Show progress indicator
         let spinner = UIActivityIndicatorView()
         spinner.center = addObjectButton.center
@@ -357,8 +350,8 @@ extension FocusARSCNView {
         DispatchQueue.global().async {
             self.isLoadingObject = true
             object.delegate = self
-            VirtualObjectsManager.shared.addVirtualObject(virtualObject: object)
-            VirtualObjectsManager.shared.setVirtualObjectSelected(virtualObject: object)
+            self.objectManager.addVirtualObject(virtualObject: object)
+            self.objectManager.selected = object
 
             object.loadModel()
 
@@ -415,10 +408,6 @@ extension FocusARSCNView: VirtualObjectProtocol {
 
         guard let newPosition = pos else {
             print("CANNOT PLACE OBJECT\nTry moving left or right.")
-            // Reset the content selection in the menu only if the content has not yet been initially placed.
-            if !VirtualObjectsManager.shared.isAVirtualObjectPlaced() {
-                resetVirtualObject()
-            }
             return
         }
 
@@ -517,7 +506,7 @@ extension FocusARSCNView: VirtualObjectProtocol {
 
     private func displayVirtualObjectTransform() {
         guard
-            let object = VirtualObjectsManager.shared.getVirtualObjectSelected(),
+            let object = objectManager.selected,
             let cameraTransform = session.currentFrame?.camera.transform
         else {
             return
@@ -541,7 +530,7 @@ extension FocusARSCNView: VirtualObjectProtocol {
 
     private func setNewVirtualObjectPosition(_ pos: SCNVector3) {
 
-        guard let object = VirtualObjectsManager.shared.getVirtualObjectSelected(),
+        guard let object = objectManager.selected,
               let cameraTransform = session.currentFrame?.camera.transform else {
             return
         }
@@ -560,11 +549,11 @@ extension FocusARSCNView: VirtualObjectProtocol {
     }
 
     private func resetVirtualObject() {
-        VirtualObjectsManager.shared.resetVirtualObjects()
+        objectManager.resetVirtualObjects()
     }
 
     private func updateVirtualObjectPosition(_ pos: SCNVector3, _ filterPosition: Bool) {
-        guard let object = VirtualObjectsManager.shared.getVirtualObjectSelected() else {
+        guard let object = objectManager.selected else {
             return
         }
 
@@ -594,7 +583,7 @@ extension FocusARSCNView: VirtualObjectProtocol {
     }
 
     private func checkIfObjectShouldMoveOntoPlane(anchor: ARPlaneAnchor) {
-        guard let object = VirtualObjectsManager.shared.getVirtualObjectSelected(),
+        guard let object = objectManager.selected,
               let planeAnchorNode = node(for: anchor) else {
             return
         }
