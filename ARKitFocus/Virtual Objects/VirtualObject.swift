@@ -7,8 +7,25 @@
 
 import ARKit
 import UIKit
-
 import SceneKit
+
+protocol VirtualObjectProtocol: AnyObject {
+    func moveVirtualObjectToPosition(
+        _ pos: SCNVector3?,
+        _ instantly: Bool,
+        _ filterPosition: Bool
+    )
+
+    func worldPositionFromScreenPosition(
+        _ position: CGPoint,
+        objectPos: SCNVector3?,
+        infinitePlane: Bool
+    ) -> (
+        position: SCNVector3?,
+        planeAnchor: ARPlaneAnchor?,
+        hitAPlane: Bool
+    )
+}
 
 class VirtualObject: SCNNode {
 
@@ -17,7 +34,7 @@ class VirtualObject: SCNNode {
     var fileExtension = ""
     var modelName = ""
 
-    weak var viewController: MainViewController?
+    weak var delegate: VirtualObjectProtocol?
 
     override init() {
         super.init()
@@ -57,16 +74,14 @@ class VirtualObject: SCNNode {
     }
 
     func translateBasedOnScreenPos(_ pos: CGPoint, instantly: Bool, infinitePlane: Bool) {
-        guard let controller = viewController else {
-            return
-        }
-        let result = controller.worldPositionFromScreenPosition(
+        guard let delegate else { return }
+        let result = delegate.worldPositionFromScreenPosition(
             pos,
             objectPos: position,
             infinitePlane: infinitePlane
         )
 
-        controller.moveVirtualObjectToPosition(
+        delegate.moveVirtualObjectToPosition(
             result.position,
             instantly,
             !result.hitAPlane

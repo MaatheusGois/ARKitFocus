@@ -24,7 +24,6 @@
 		2E8875232B46647100D98B47 /* FocusARSCNView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8875222B46647100D98B47 /* FocusARSCNView.swift */; };
 		2EB195692B452BE6007C0741 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB195682B452BE6007C0741 /* AppDelegate.swift */; };
 		2EB1956B2B452BE6007C0741 /* Models.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 2EB1956A2B452BE6007C0741 /* Models.scnassets */; };
-		2EB195702B452BE6007C0741 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EB1956E2B452BE6007C0741 /* Main.storyboard */; };
 		2EB195722B452BE8007C0741 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2EB195712B452BE8007C0741 /* Assets.xcassets */; };
 		2EB195752B452BE8007C0741 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EB195732B452BE8007C0741 /* LaunchScreen.storyboard */; };
 		2EB195852B452C49007C0741 /* ScieneView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB1957B2B452C49007C0741 /* ScieneView+.swift */; };
@@ -42,7 +41,6 @@
 		2EB195652B452BE6007C0741 /* ARKitFocus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARKitFocus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EB195682B452BE6007C0741 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2EB1956A2B452BE6007C0741 /* Models.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Models.scnassets; sourceTree = "<group>"; };
-		2EB1956F2B452BE6007C0741 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2EB195712B452BE8007C0741 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2EB195742B452BE8007C0741 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2EB1957B2B452C49007C0741 /* ScieneView+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ScieneView+.swift"; sourceTree = "<group>"; };
@@ -109,7 +107,6 @@
 				2EB1957C2B452C49007C0741 /* Virtual Objects */,
 				2E430BC42B4626B80002C455 /* Example */,
 				2EB1956A2B452BE6007C0741 /* Models.scnassets */,
-				2EB1956E2B452BE6007C0741 /* Main.storyboard */,
 				2EB195712B452BE8007C0741 /* Assets.xcassets */,
 				2EB195732B452BE8007C0741 /* LaunchScreen.storyboard */,
 			);
@@ -200,7 +197,6 @@
 				2EB1956B2B452BE6007C0741 /* Models.scnassets in Resources */,
 				2EB195752B452BE8007C0741 /* LaunchScreen.storyboard in Resources */,
 				2EB195722B452BE8007C0741 /* Assets.xcassets in Resources */,
-				2EB195702B452BE6007C0741 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,14 +244,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		2EB1956E2B452BE6007C0741 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2EB1956F2B452BE6007C0741 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		2EB195732B452BE8007C0741 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -398,7 +386,6 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = arkit;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -428,7 +415,6 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = arkit;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
