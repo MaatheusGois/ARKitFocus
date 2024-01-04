@@ -1,11 +1,11 @@
-# ARKitLocation
+# ARKitFocus
 
-This project is an iOS application that utilizes ARKit for augmented reality experiences with a focus on object placement in the real world.
+| <img width="300" src="https://github.com/MaatheusGois/ARKitFocus/assets/31082311/867c9581-18e7-4413-be31-0e3527b62f02"> | <div align="left" >This iOS application utilizes ARKit to offer an immersive augmented reality experience, emphasizing precise object placement within the real world. Users can effortlessly interact with virtual elements, fostering a seamless blend of digital and physical environments.</div> |
+|---|---|
 
+## Preview
 
-https://github.com/MaatheusGois/ARKitLocation/assets/31082311/2d635225-5221-4900-9171-6d24d4b97630
-
-
+[Preview](https://github.com/MaatheusGois/ARKitLocation/assets/31082311/2d635225-5221-4900-9171-6d24d4b97630)
 
 ## Features
 
