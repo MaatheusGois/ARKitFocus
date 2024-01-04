@@ -11,7 +11,7 @@ import Photos
 import SceneKit
 import UIKit
 
-class MainViewController: UIViewController {
+final class MainViewController: UIViewController {
     var dragOnInfinitePlanesEnabled = false
     var currentGesture: Gesture?
 
@@ -55,28 +55,11 @@ class MainViewController: UIViewController {
             if use3DOFTracking {
                 sessionConfig = ARWorldTrackingConfiguration()
             }
-            //			sessionConfig.isLightEstimationEnabled = true
             session.run(sessionConfig)
         }
     }
 
     @IBOutlet var sceneView: ARSCNView!
-
-    // MARK: - Ambient Light Estimation
-
-    func toggleAmbientLightEstimation(_ enabled: Bool) {
-        if enabled {
-            if !sessionConfig.isLightEstimationEnabled {
-                sessionConfig.isLightEstimationEnabled = true
-                session.run(sessionConfig)
-            }
-        } else {
-            if sessionConfig.isLightEstimationEnabled {
-                sessionConfig.isLightEstimationEnabled = false
-                session.run(sessionConfig)
-            }
-        }
-    }
 
     // MARK: - Virtual Object Loading
 
@@ -91,23 +74,11 @@ class MainViewController: UIViewController {
 
     @IBOutlet var addObjectButton: UIButton!
 
-    @IBAction func chooseObject(_ button: UIButton) {
-        loadVirtualObject(object: Vase())
+    @IBAction func chooseObject() {
+        loadVirtualObject()
     }
 
     // MARK: - Planes
-
-    var planes = [ARPlaneAnchor: Plane]()
-
-    func addPlane(node: SCNNode, anchor: ARPlaneAnchor) {
-
-        //		let pos = SCNVector3.positionFromTransform(anchor.transform)
-
-        let plane = Plane(anchor)
-
-        planes[anchor] = plane
-        node.addChildNode(plane)
-    }
 
     func restartPlaneDetection() {
         // configure session
@@ -118,7 +89,7 @@ class MainViewController: UIViewController {
 
         // reset timer
         if trackingFallbackTimer != nil {
-            trackingFallbackTimer!.invalidate()
+            trackingFallbackTimer?.invalidate()
             trackingFallbackTimer = nil
         }
     }
@@ -138,21 +109,36 @@ class MainViewController: UIViewController {
         guard let screenCenter else { return }
 
         let virtualObject = VirtualObjectsManager.shared.getVirtualObjectSelected()
-        if virtualObject != nil, sceneView.isNode(virtualObject!, insideFrustumOf: sceneView.pointOfView!) {
+        if
+            virtualObject != nil,
+            sceneView.isNode(virtualObject!, insideFrustumOf: sceneView.pointOfView!) {
             focusSquare?.hide()
         } else {
             focusSquare?.unhide()
         }
-        let (worldPos, planeAnchor, _) = worldPositionFromScreenPosition(screenCenter, objectPos: focusSquare?.position)
+
+        let (worldPos, planeAnchor, _) = worldPositionFromScreenPosition(
+            screenCenter,
+            objectPos: focusSquare?.position
+        )
+
         if let worldPos {
-            focusSquare?.update(for: worldPos, planeAnchor: planeAnchor, camera: session.currentFrame?.camera)
+            focusSquare?.update(
+                for: worldPos,
+                planeAnchor: planeAnchor,
+                camera: session.currentFrame?.camera
+            )
         }
     }
 
     // MARK: - UI Elements and Actions
 
     @IBOutlet var restartExperienceButton: UIButton!
-    var restartExperienceButtonIsEnabled = true
+    var restartExperienceButtonIsEnabled = true {
+        didSet {
+            restartExperienceButton.isEnabled = restartExperienceButtonIsEnabled
+        }
+    }
 
     @IBAction func restartExperience(_ sender: Any) {
         guard restartExperienceButtonIsEnabled, !isLoadingObject else {
@@ -164,13 +150,12 @@ class MainViewController: UIViewController {
             self.use3DOFTracking = false
 
             self.setupFocusSquare()
-            //			self.loadVirtualObject()
             self.restartPlaneDetection()
 
-            self.restartExperienceButton.setImage(#imageLiteral(resourceName: "restart"), for: [])
+            VirtualObjectsManager.shared.resetVirtualObjects()
 
             // Disable Restart button for five seconds in order to give the session enough time to restart.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 self.restartExperienceButtonIsEnabled = true
             }
         }
@@ -182,6 +167,8 @@ class MainViewController: UIViewController {
         if allowRestart {
             restartExperience(self)
         }
+
+        print(title, message)
     }
 }
 
@@ -202,7 +189,10 @@ extension MainViewController {
         case .limited:
             if use3DOFTrackingFallback {
                 // After 10 seconds of limited quality, fall back to 3DOF mode.
-                trackingFallbackTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false, block: { _ in
+                trackingFallbackTimer = Timer.scheduledTimer(
+                    withTimeInterval: 10,
+                    repeats: false,
+                    block: { _ in
                     self.use3DOFTracking = true
                     self.trackingFallbackTimer?.invalidate()
                     self.trackingFallbackTimer = nil
@@ -210,7 +200,7 @@ extension MainViewController {
             }
         case .normal:
             if use3DOFTrackingFallback, trackingFallbackTimer != nil {
-                trackingFallbackTimer!.invalidate()
+                trackingFallbackTimer?.invalidate()
                 trackingFallbackTimer = nil
             }
         }
@@ -227,7 +217,7 @@ extension MainViewController {
             }
         }
 
-        let isRecoverable = (arError.code == .worldTrackingFailed)
+        let isRecoverable = arError.code == .worldTrackingFailed
         if isRecoverable {
             sessionErrorMsg += "\nYou can try resetting the session or quit the application."
         } else {
@@ -256,7 +246,7 @@ extension MainViewController {
         if currentGesture == nil {
             currentGesture = Gesture.startGestureFromTouches(touches, sceneView, object)
         } else {
-            currentGesture = currentGesture!.updateGestureFromTouches(touches, .touchBegan)
+            currentGesture = currentGesture?.updateGestureFromTouches(touches, .touchBegan)
         }
 
         displayVirtualObjectTransform()
@@ -271,11 +261,6 @@ extension MainViewController {
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if !VirtualObjectsManager.shared.isAVirtualObjectPlaced() {
-            chooseObject(addObjectButton)
-            return
-        }
-
         currentGesture = currentGesture?.updateGestureFromTouches(touches, .touchEnded)
     }
 
@@ -291,12 +276,11 @@ extension MainViewController {
 
 extension MainViewController {
 
-    func loadVirtualObject(object: VirtualObject) {
+    func loadVirtualObject(object: VirtualObject = Vase()) {
         // Show progress indicator
         let spinner = UIActivityIndicatorView()
         spinner.center = addObjectButton.center
         spinner.bounds.size = CGSize(width: addObjectButton.bounds.width - 5, height: addObjectButton.bounds.height - 5)
-        addObjectButton.setImage(#imageLiteral(resourceName: "buttonring"), for: [])
         sceneView.addSubview(spinner)
         spinner.startAnimating()
 
@@ -317,11 +301,6 @@ extension MainViewController {
 
                 spinner.removeFromSuperview()
 
-                // Update the icon of the add object button
-                let buttonImage = UIImage.composeButtonImage(from: object.thumbImage)
-                let pressedButtonImage = UIImage.composeButtonImage(from: object.thumbImage, alpha: 0.3)
-                self.addObjectButton.setImage(buttonImage, for: [])
-                self.addObjectButton.setImage(pressedButtonImage, for: [.highlighted])
                 self.isLoadingObject = false
             }
         }
@@ -345,7 +324,6 @@ extension MainViewController: ARSCNViewDelegate {
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         DispatchQueue.main.async {
             if let planeAnchor = anchor as? ARPlaneAnchor {
-                self.addPlane(node: node, anchor: planeAnchor)
                 self.checkIfObjectShouldMoveOntoPlane(anchor: planeAnchor)
             }
         }
@@ -354,18 +332,7 @@ extension MainViewController: ARSCNViewDelegate {
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
         DispatchQueue.main.async {
             if let planeAnchor = anchor as? ARPlaneAnchor {
-                if let plane = self.planes[planeAnchor] {
-                    plane.update(planeAnchor)
-                }
                 self.checkIfObjectShouldMoveOntoPlane(anchor: planeAnchor)
-            }
-        }
-    }
-
-    func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
-        DispatchQueue.main.async {
-            if let planeAnchor = anchor as? ARPlaneAnchor, let plane = self.planes.removeValue(forKey: planeAnchor) {
-                plane.removeFromParentNode()
             }
         }
     }
@@ -375,8 +342,10 @@ extension MainViewController: ARSCNViewDelegate {
 
 extension MainViewController {
     func displayVirtualObjectTransform() {
-        guard let object = VirtualObjectsManager.shared.getVirtualObjectSelected(),
-              let cameraTransform = session.currentFrame?.camera.transform else {
+        guard
+            let object = VirtualObjectsManager.shared.getVirtualObjectSelected(),
+            let cameraTransform = session.currentFrame?.camera.transform
+        else {
             return
         }
 
@@ -386,7 +355,7 @@ extension MainViewController {
 
         let distanceToUser = vectorToCamera.length()
 
-        var angleDegrees = Int(((object.eulerAngles.y) * 180) / Float.pi) % 360
+        var angleDegrees = Int(((object.eulerAngles.y) * 180) / .pi) % 360
         if angleDegrees < 0 {
             angleDegrees += 360
         }
@@ -428,9 +397,15 @@ extension MainViewController {
         // 1. Always do a hit test against exisiting plane anchors first.
         //    (If any such anchors exist & only within their extents.)
 
-        let planeHitTestResults = sceneView.hitTest(position, types: .existingPlaneUsingExtent)
-        if let result = planeHitTestResults.first {
+        guard let query = sceneView.raycastQuery(
+            from: position,
+            allowing: .existingPlaneGeometry,
+            alignment: .any
+        ) else { return (nil, nil, false) }
 
+        let planeHitTestResults = sceneView.session.raycast(query)
+
+        if let result = planeHitTestResults.first {
             let planeHitTestPosition = SCNVector3.positionFromTransform(result.worldTransform)
             let planeAnchor = result.anchor
 
@@ -445,8 +420,12 @@ extension MainViewController {
         var featureHitTestPosition: SCNVector3?
         var highQualityFeatureHitTestResult = false
 
-        let highQualityfeatureHitTestResults =
-            sceneView.hitTestWithFeatures(position, coneOpeningAngleInDegrees: 18, minDistance: 0.2, maxDistance: 2.0)
+        let highQualityfeatureHitTestResults = sceneView.hitTestWithFeatures(
+            position,
+            coneOpeningAngleInDegrees: 18,
+            minDistance: 0.2,
+            maxDistance: 2
+        )
 
         if !highQualityfeatureHitTestResults.isEmpty {
             let result = highQualityfeatureHitTestResults[0]
@@ -512,9 +491,6 @@ extension MainViewController {
 
     func resetVirtualObject() {
         VirtualObjectsManager.shared.resetVirtualObjects()
-
-        addObjectButton.setImage(#imageLiteral(resourceName: "add"), for: [])
-        addObjectButton.setImage(#imageLiteral(resourceName: "addPressed"), for: [.highlighted])
     }
 
     func updateVirtualObjectPosition(_ pos: SCNVector3, _ filterPosition: Bool) {
@@ -556,7 +532,7 @@ extension MainViewController {
         // Get the object's position in the plane's coordinate system.
         let objectPos = planeAnchorNode.convertPosition(object.position, from: object.parent)
 
-        if objectPos.y == 0 {
+        if objectPos.y == .zero {
             return // The object is already on the plane
         }
 
@@ -579,7 +555,9 @@ extension MainViewController {
 
             SCNTransaction.begin()
             SCNTransaction.animationDuration = 0.5
-            SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+            SCNTransaction.animationTimingFunction = CAMediaTimingFunction(
+                name: .easeInEaseOut
+            )
             object.position.y = anchor.transform.columns.3.y
             SCNTransaction.commit()
         }

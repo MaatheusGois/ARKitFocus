@@ -7,16 +7,9 @@
 
 import Foundation
 
-class VirtualObjectsManager {
+final class VirtualObjectsManager {
 
     static let shared = VirtualObjectsManager()
-
-    // AutoIncrement Unique Id
-    private var nextID = 1
-    func generateUid() -> Int {
-        nextID += 1
-        return nextID
-    }
 
     private var virtualObjects = [VirtualObject]()
     private var virtualObjectSelected: VirtualObject?

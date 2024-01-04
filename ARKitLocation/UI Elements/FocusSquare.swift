@@ -8,7 +8,7 @@
 import ARKit
 import Foundation
 
-class FocusSquare: SCNNode {
+final class FocusSquare: SCNNode {
 
     // Original size of the focus square in m.
     private let focusSquareSize: Float = 0.17
@@ -32,15 +32,13 @@ class FocusSquare: SCNNode {
     // For scale adapdation based on the camera distance, see the `scaleBasedOnDistance(camera:)` method.
     /////////////////////////////////////////////////
 
-    var lastPositionOnPlane: SCNVector3?
     var lastPosition: SCNVector3?
 
     override init() {
         super.init()
-        self.opacity = 0.0
+        self.opacity = .zero
         addChildNode(focusSquareNode())
         open()
-        self.lastPositionOnPlane = nil
         self.lastPosition = nil
         self.recentFocusSquarePositions = []
         self.anchorsOfVisitedPlanes = []
@@ -55,7 +53,6 @@ class FocusSquare: SCNNode {
         lastPosition = position
         if let anchor = planeAnchor {
             close(flash: !anchorsOfVisitedPlanes.contains(anchor))
-            lastPositionOnPlane = position
             anchorsOfVisitedPlanes.insert(anchor)
         } else {
             open()
@@ -64,13 +61,13 @@ class FocusSquare: SCNNode {
     }
 
     func hide() {
-        if opacity == 1.0 {
+        if opacity == 1 {
             runAction(SCNAction.fadeOut(duration: 0.5))
         }
     }
 
     func unhide() {
-        if opacity == 0.0 {
+        if opacity == .zero {
             runAction(SCNAction.fadeIn(duration: 0.5))
         }
     }
@@ -146,7 +143,7 @@ class FocusSquare: SCNNode {
 
     private func pulseAction() -> SCNAction {
         let pulseOutAction = SCNAction.fadeOpacity(to: 0.4, duration: 0.5)
-        let pulseInAction = SCNAction.fadeOpacity(to: 1.0, duration: 0.5)
+        let pulseInAction = SCNAction.fadeOpacity(to: 1, duration: 0.5)
         pulseOutAction.timingMode = .easeInEaseOut
         pulseInAction.timingMode = .easeInEaseOut
 
@@ -155,7 +152,7 @@ class FocusSquare: SCNNode {
 
     private func stopPulsing(for node: SCNNode?) {
         node?.removeAction(forKey: "pulse")
-        node?.opacity = 1.0
+        node?.opacity = 1
     }
 
     private var isAnimating = false
@@ -366,7 +363,7 @@ class FocusSquare: SCNNode {
     }
 }
 
-class FocusSquareSegment: SCNNode {
+final class FocusSquareSegment: SCNNode {
 
     enum Direction {
         case up

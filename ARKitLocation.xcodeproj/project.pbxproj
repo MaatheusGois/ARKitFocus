@@ -29,7 +29,6 @@
 		2EB195852B452C49007C0741 /* ScieneView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB1957B2B452C49007C0741 /* ScieneView+.swift */; };
 		2EB195862B452C49007C0741 /* VirtualObjectsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB1957D2B452C49007C0741 /* VirtualObjectsManager.swift */; };
 		2EB195872B452C49007C0741 /* Vase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB1957E2B452C49007C0741 /* Vase.swift */; };
-		2EB195882B452C49007C0741 /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB195802B452C49007C0741 /* Plane.swift */; };
 		2EB195892B452C49007C0741 /* FocusSquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB195812B452C49007C0741 /* FocusSquare.swift */; };
 		2EB1958A2B452C49007C0741 /* Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB195822B452C49007C0741 /* Gesture.swift */; };
 		2EB1958B2B452C49007C0741 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB195832B452C49007C0741 /* MainViewController.swift */; };
@@ -47,7 +46,6 @@
 		2EB1957B2B452C49007C0741 /* ScieneView+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ScieneView+.swift"; sourceTree = "<group>"; };
 		2EB1957D2B452C49007C0741 /* VirtualObjectsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VirtualObjectsManager.swift; sourceTree = "<group>"; };
 		2EB1957E2B452C49007C0741 /* Vase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vase.swift; sourceTree = "<group>"; };
-		2EB195802B452C49007C0741 /* Plane.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; };
 		2EB195812B452C49007C0741 /* FocusSquare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusSquare.swift; sourceTree = "<group>"; };
 		2EB195822B452C49007C0741 /* Gesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gesture.swift; sourceTree = "<group>"; };
 		2EB195832B452C49007C0741 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -75,6 +73,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		2E430BC42B4626B80002C455 /* Example */ = {
+			isa = PBXGroup;
+			children = (
+				2EB1957E2B452C49007C0741 /* Vase.swift */,
+			);
+			path = Example;
+			sourceTree = "<group>";
+		};
 		2EB1955C2B452BE6007C0741 = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +105,7 @@
 				2E430BC32B4619390002C455 /* Extensions */,
 				2EB1957F2B452C49007C0741 /* UI Elements */,
 				2EB1957C2B452C49007C0741 /* Virtual Objects */,
+				2E430BC42B4626B80002C455 /* Example */,
 				2EB1956A2B452BE6007C0741 /* Models.scnassets */,
 				2EB1956E2B452BE6007C0741 /* Main.storyboard */,
 				2EB195712B452BE8007C0741 /* Assets.xcassets */,
@@ -112,7 +119,6 @@
 			children = (
 				2EB1957D2B452C49007C0741 /* VirtualObjectsManager.swift */,
 				2EB1958D2B452C86007C0741 /* VirtualObject.swift */,
-				2EB1957E2B452C49007C0741 /* Vase.swift */,
 			);
 			path = "Virtual Objects";
 			sourceTree = "<group>";
@@ -120,7 +126,6 @@
 		2EB1957F2B452C49007C0741 /* UI Elements */ = {
 			isa = PBXGroup;
 			children = (
-				2EB195802B452C49007C0741 /* Plane.swift */,
 				2EB195812B452C49007C0741 /* FocusSquare.swift */,
 				2EB195822B452C49007C0741 /* Gesture.swift */,
 			);
@@ -228,7 +233,6 @@
 				2EB195872B452C49007C0741 /* Vase.swift in Sources */,
 				2EB195862B452C49007C0741 /* VirtualObjectsManager.swift in Sources */,
 				2EB1958E2B452C86007C0741 /* VirtualObject.swift in Sources */,
-				2EB195882B452C49007C0741 /* Plane.swift in Sources */,
 				2EB1958B2B452C49007C0741 /* MainViewController.swift in Sources */,
 				2EB195852B452C49007C0741 /* ScieneView+.swift in Sources */,
 				2EB1958C2B452C49007C0741 /* Utilities.swift in Sources */,

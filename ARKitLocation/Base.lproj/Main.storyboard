@@ -3,14 +3,16 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Main View Controller-->
         <scene sceneID="oXp-i1-J4W">
             <objects>
-                <viewController id="2ib-Pv-c29" customClass="MainViewController" customModule="ARKitProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="2ib-Pv-c29" customClass="MainViewController" customModule="ARKitLocation" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1Wn-xT-3We">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -24,21 +26,27 @@
                                     <constraint firstAttribute="height" constant="64" id="kGA-96-9Pg"/>
                                     <constraint firstAttribute="width" constant="64" id="vOJ-55-lZV"/>
                                 </constraints>
-                                <connections>
-                                    <action selector="chooseObject:" destination="2ib-Pv-c29" eventType="touchUpInside" id="1eZ-re-D1T"/>
-                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOD-yu-bLj" userLabel="Add Object Button">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" role="primary" translatesAutoresizingMaskIntoConstraints="NO" id="DOD-yu-bLj" userLabel="Add Object Button">
                                 <rect key="frame" x="172.66666666666666" y="755" width="48" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="ool-c9-SVD"/>
                                     <constraint firstAttribute="width" constant="48" id="v0h-7l-smi"/>
                                 </constraints>
-                                <state key="normal" image="add">
-                                    <color key="titleColor" red="0.85882352939999995" green="0.72941176470000002" blue="0.22352941179999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="34"/>
+                                <size key="titleShadowOffset" width="48" height="48"/>
+                                <state key="normal">
+                                    <imageReference key="image" image="plus.circle.fill" catalog="system" renderingMode="hierarchical">
+                                        <hierarchicalColors>
+                                            <color systemColor="secondarySystemBackgroundColor"/>
+                                            <color systemColor="systemGray3Color"/>
+                                            <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="0.28461299668874174" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </hierarchicalColors>
+                                    </imageReference>
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="48" weight="thin"/>
                                 </state>
                                 <connections>
-                                    <action selector="chooseObject:" destination="2ib-Pv-c29" eventType="touchUpInside" id="0P4-jm-0Dx"/>
+                                    <action selector="chooseObject" destination="2ib-Pv-c29" eventType="touchUpInside" id="vE6-9q-ssX"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfp-uF-Z30" userLabel="Restart Experience Button Hit Area">
@@ -46,17 +54,23 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="90" id="AXv-Yx-g9p"/>
                                 </constraints>
-                                <connections>
-                                    <action selector="restartExperience:" destination="2ib-Pv-c29" eventType="touchUpInside" id="r3s-KP-kNH"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOP-zW-LmK" userLabel="Restart Experience Button Icon">
-                                <rect key="frame" x="358" y="79" width="20" height="23"/>
+                                <rect key="frame" x="334" y="79" width="44" height="44"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="23" id="VBD-bZ-ey8"/>
-                                    <constraint firstAttribute="width" constant="20" id="jWV-AD-IJQ"/>
+                                    <constraint firstAttribute="height" constant="44" id="VBD-bZ-ey8"/>
+                                    <constraint firstAttribute="width" constant="44" id="jWV-AD-IJQ"/>
                                 </constraints>
-                                <state key="normal" image="restart"/>
+                                <state key="normal">
+                                    <imageReference key="image" image="arrow.clockwise.circle.fill" catalog="system" renderingMode="hierarchical">
+                                        <hierarchicalColors>
+                                            <color systemColor="tertiarySystemGroupedBackgroundColor"/>
+                                            <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="0.72180256620000005" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="0.28461299670000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </hierarchicalColors>
+                                    </imageReference>
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="40" weight="thin"/>
+                                </state>
                                 <state key="selected" image="restartPressed"/>
                                 <state key="highlighted" image="restartPressed"/>
                                 <connections>
@@ -93,8 +107,17 @@
         </scene>
     </scenes>
     <resources>
-        <image name="add" width="48" height="48"/>
-        <image name="restart" width="20" height="23"/>
+        <image name="arrow.clockwise.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="plus.circle.fill" catalog="system" width="128" height="123"/>
         <image name="restartPressed" width="20" height="23"/>
+        <systemColor name="secondarySystemBackgroundColor">
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGray3Color">
+            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="tertiarySystemGroupedBackgroundColor">
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

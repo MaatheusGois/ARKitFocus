@@ -8,41 +8,6 @@
 import ARKit
 import Foundation
 
-// - MARK: UIImage extensions
-
-extension UIImage {
-    func inverted() -> UIImage? {
-        guard let ciImage = CIImage(image: self) else {
-            return nil
-        }
-        return UIImage(ciImage: ciImage.applyingFilter("CIColorInvert", parameters: [String: Any]()))
-    }
-
-    static func composeButtonImage(from thumbImage: UIImage, alpha: CGFloat = 1.0) -> UIImage {
-        let maskImage = #imageLiteral(resourceName: "buttonring")
-        var thumbnailImage = thumbImage
-        if let invertedImage = thumbImage.inverted() {
-            thumbnailImage = invertedImage
-        }
-
-        // Compose a button image based on a white background and the inverted thumbnail image.
-        UIGraphicsBeginImageContextWithOptions(maskImage.size, false, 0.0)
-        let maskDrawRect = CGRect(
-            origin: CGPoint.zero,
-            size: maskImage.size
-        )
-        let thumbDrawRect = CGRect(
-            origin: CGPoint((maskImage.size - thumbImage.size) / 2),
-            size: thumbImage.size
-        )
-        maskImage.draw(in: maskDrawRect, blendMode: .normal, alpha: alpha)
-        thumbnailImage.draw(in: thumbDrawRect, blendMode: .normal, alpha: alpha)
-        let composedImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return composedImage!
-    }
-}
-
 // MARK: - Collection extensions
 
 extension Array where Iterator.Element == CGFloat {
@@ -111,6 +76,12 @@ extension SCNNode {
             child.renderOnTop()
         }
     }
+
+    func removeAllChildren() {
+        for child in childNodes {
+            child.removeFromParentNode()
+        }
+    }
 }
 
 // MARK: - SCNVector3 extensions
@@ -155,10 +126,6 @@ extension SCNVector3 {
         SCNVector3Make(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
     }
 
-    func friendlyString() -> String {
-        "(\(String(format: "%.2f", x)), \(String(format: "%.2f", y)), \(String(format: "%.2f", z)))"
-    }
-
     func dot(_ vec: SCNVector3) -> Float {
         (x * vec.x) + (y * vec.y) + (z * vec.z)
     }
@@ -166,12 +133,6 @@ extension SCNVector3 {
     func cross(_ vec: SCNVector3) -> SCNVector3 {
         SCNVector3(y * vec.z - z * vec.y, z * vec.x - x * vec.z, x * vec.y - y * vec.x)
     }
-}
-
-public let SCNVector3One = SCNVector3(1.0, 1.0, 1.0)
-
-func SCNVector3Uniform(_ value: Float) -> SCNVector3 {
-    SCNVector3Make(value, value, value)
 }
 
 func SCNVector3Uniform(_ value: CGFloat) -> SCNVector3 {
@@ -190,20 +151,12 @@ func += (left: inout SCNVector3, right: SCNVector3) {
     left = left + right
 }
 
-func -= (left: inout SCNVector3, right: SCNVector3) {
-    left = left - right
-}
-
 func / (left: SCNVector3, right: Float) -> SCNVector3 {
     SCNVector3Make(left.x / right, left.y / right, left.z / right)
 }
 
 func * (left: SCNVector3, right: Float) -> SCNVector3 {
     SCNVector3Make(left.x * right, left.y * right, left.z * right)
-}
-
-func /= (left: inout SCNVector3, right: Float) {
-    left = left / right
 }
 
 func *= (left: inout SCNVector3, right: Float) {
@@ -233,16 +186,8 @@ extension SCNMaterial {
 
 extension CGPoint {
 
-    init(_ size: CGSize) {
-        self.init(x: size.width, y: size.height)
-    }
-
     init(_ vector: SCNVector3) {
         self.init(x: CGFloat(vector.x), y: CGFloat(vector.y))
-    }
-
-    func distanceTo(_ point: CGPoint) -> CGFloat {
-        (self - point).length()
     }
 
     func length() -> CGFloat {
@@ -251,10 +196,6 @@ extension CGPoint {
 
     func midpoint(_ point: CGPoint) -> CGPoint {
         (self + point) / 2
-    }
-
-    func friendlyString() -> String {
-        "(\(String(format: "%.2f", x)), \(String(format: "%.2f", y)))"
     }
 }
 
@@ -266,73 +207,8 @@ func - (left: CGPoint, right: CGPoint) -> CGPoint {
     CGPoint(x: left.x - right.x, y: left.y - right.y)
 }
 
-func += (left: inout CGPoint, right: CGPoint) {
-    left = left + right
-}
-
-func -= (left: inout CGPoint, right: CGPoint) {
-    left = left - right
-}
-
 func / (left: CGPoint, right: CGFloat) -> CGPoint {
     CGPoint(x: left.x / right, y: left.y / right)
-}
-
-func * (left: CGPoint, right: CGFloat) -> CGPoint {
-    CGPoint(x: left.x * right, y: left.y * right)
-}
-
-func /= (left: inout CGPoint, right: CGFloat) {
-    left = left / right
-}
-
-func *= (left: inout CGPoint, right: CGFloat) {
-    left = left * right
-}
-
-// MARK: - CGSize extensions
-
-extension CGSize {
-
-    init(_ point: CGPoint) {
-        self.init(width: point.x, height: point.y)
-    }
-
-    func friendlyString() -> String {
-        "(\(String(format: "%.2f", width)), \(String(format: "%.2f", height)))"
-    }
-}
-
-func + (left: CGSize, right: CGSize) -> CGSize {
-    CGSize(width: left.width + right.width, height: left.height + right.height)
-}
-
-func - (left: CGSize, right: CGSize) -> CGSize {
-    CGSize(width: left.width - right.width, height: left.height - right.height)
-}
-
-func += (left: inout CGSize, right: CGSize) {
-    left = left + right
-}
-
-func -= (left: inout CGSize, right: CGSize) {
-    left = left - right
-}
-
-func / (left: CGSize, right: CGFloat) -> CGSize {
-    CGSize(width: left.width / right, height: left.height / right)
-}
-
-func * (left: CGSize, right: CGFloat) -> CGSize {
-    CGSize(width: left.width * right, height: left.height * right)
-}
-
-func /= (left: inout CGSize, right: CGFloat) {
-    left = left / right
-}
-
-func *= (left: inout CGSize, right: CGFloat) {
-    left = left * right
 }
 
 // MARK: - CGRect extensions
@@ -393,7 +269,7 @@ extension ARSCNView {
         let cameraPos = SCNVector3.positionFromTransform(frame.camera.transform)
 
         // Note: z: 1.0 will unproject() the screen position to the far clipping plane.
-        let positionVec = SCNVector3(x: Float(point.x), y: Float(point.y), z: 1.0)
+        let positionVec = SCNVector3(x: Float(point.x), y: Float(point.y), z: 1)
         let screenPosOnFarClippingPlane = unprojectPoint(positionVec)
 
         var rayDirection = screenPosOnFarClippingPlane - cameraPos
@@ -403,19 +279,19 @@ extension ARSCNView {
     }
 
     func hitTestWithInfiniteHorizontalPlane(_ point: CGPoint, _ pointOnPlane: SCNVector3) -> SCNVector3? {
-
         guard let ray = hitTestRayFromScreenPos(point) else {
             return nil
         }
 
-        // Do not intersect with planes above the camera or if the ray is almost parallel to the plane.
         if ray.direction.y > -0.03 {
             return nil
         }
 
-        // Return the intersection of a ray from the camera through the screen position with a horizontal plane
-        // at height (Y axis).
-        return rayIntersectionWithHorizontalPlane(rayOrigin: ray.origin, direction: ray.direction, planeY: pointOnPlane.y)
+        return rayIntersectionWithHorizontalPlane(
+            rayOrigin: ray.origin,
+            direction: ray.direction,
+            planeY: pointOnPlane.y
+        )
     }
 
     struct FeatureHitTestResult {
@@ -522,7 +398,6 @@ extension ARSCNView {
 
         let points = features.__points
 
-        // Determine the point from the whole point cloud which is closest to the hit test ray.
         var closestFeaturePoint = origin
         var minDistance = Float.greatestFiniteMagnitude
 

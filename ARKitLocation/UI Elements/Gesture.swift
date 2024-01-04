@@ -104,7 +104,7 @@ class Gesture {
     }
 }
 
-class SingleFingerGesture: Gesture {
+final class SingleFingerGesture: Gesture {
 
     var initialTouchLocation = CGPoint()
     var latestTouchLocation = CGPoint()
@@ -249,7 +249,7 @@ class SingleFingerGesture: Gesture {
     }
 }
 
-class TwoFingerGesture: Gesture {
+final class TwoFingerGesture: Gesture {
 
     var firstTouch = UITouch()
     var secondTouch = UITouch()
@@ -272,9 +272,9 @@ class TwoFingerGesture: Gesture {
     let scaleThresholdHarder: CGFloat = 90
     var scaleThresholdPassed = false
     var allowScaling = false
-    var initialDistanceBetweenFingers: CGFloat = 0
-    var baseDistanceBetweenFingers: CGFloat = 0
-    var objectBaseScale: CGFloat = 1.0
+    var initialDistanceBetweenFingers: CGFloat = .zero
+    var baseDistanceBetweenFingers: CGFloat = .zero
+    var objectBaseScale: CGFloat = 1
 
     override init(_ touches: Set<UITouch>, _ sceneView: ARSCNView, _ virtualObject: VirtualObject) {
         super.init(touches, sceneView, virtualObject)

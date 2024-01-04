@@ -17,7 +17,7 @@ extension ARSCNView {
         automaticallyUpdatesLighting = false
         preferredFramesPerSecond = 60
         contentScaleFactor = 1.3
-        enableEnvironmentMapWithIntensity(25.0)
+        enableEnvironmentMapWithIntensity(25)
         if let camera = pointOfView?.camera {
             camera.wantsHDR = true
             camera.wantsExposureAdaptation = true
@@ -28,7 +28,7 @@ extension ARSCNView {
 
     func enableEnvironmentMapWithIntensity(_ intensity: CGFloat) {
         if scene.lightingEnvironment.contents == nil {
-            if let environmentMap = UIImage(named: "Models.scnassets/sharedImages/environment_blur.exr") {
+            if let environmentMap = UIImage(named: "Models.scnassets/environment_blur.exr") {
                 scene.lightingEnvironment.contents = environmentMap
             }
         }

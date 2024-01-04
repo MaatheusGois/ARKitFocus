@@ -8,30 +8,27 @@
 import ARKit
 import UIKit
 
-class VirtualObject: SCNNode {
-    static let ROOT_NAME = "Virtual object root node"
-    var fileExtension = ""
-    var thumbImage: UIImage!
-    var title = ""
-    var modelName = ""
-    var modelLoaded = false
-    var id: Int!
+import SceneKit
 
-    var viewController: MainViewController?
+class VirtualObject: SCNNode {
+
+    static let ROOT_NAME = "Virtual object root node"
+
+    var fileExtension = ""
+    var modelName = ""
+
+    weak var viewController: MainViewController?
 
     override init() {
         super.init()
         self.name = VirtualObject.ROOT_NAME
     }
 
-    init(modelName: String, fileExtension: String, thumbImageFilename: String, title: String) {
+    init(modelName: String, fileExtension: String) {
         super.init()
-        self.id = VirtualObjectsManager.shared.generateUid()
         self.name = VirtualObject.ROOT_NAME
         self.modelName = modelName
         self.fileExtension = fileExtension
-        self.thumbImage = UIImage(named: thumbImageFilename)
-        self.title = title
     }
 
     @available(*, unavailable)
@@ -40,10 +37,8 @@ class VirtualObject: SCNNode {
     }
 
     func loadModel() {
-        guard let virtualObjectScene = SCNScene(
-            named: "\(modelName).\(fileExtension)",
-            inDirectory: "Models.scnassets/\(modelName)"
-        ) else {
+        guard let virtualObjectScene = SCNScene(named: "\(modelName).\(fileExtension)",
+                                                inDirectory: "Models.scnassets/\(modelName)") else {
             return
         }
 
@@ -55,16 +50,10 @@ class VirtualObject: SCNNode {
             wrapperNode.addChildNode(child)
         }
         addChildNode(wrapperNode)
-
-        modelLoaded = true
     }
 
     func unloadModel() {
-        for child in childNodes {
-            child.removeFromParentNode()
-        }
-
-        modelLoaded = false
+        removeAllChildren()
     }
 
     func translateBasedOnScreenPos(_ pos: CGPoint, instantly: Bool, infinitePlane: Bool) {
@@ -92,8 +81,8 @@ extension VirtualObject {
             return true
         }
 
-        if node.parent != nil {
-            return isNodePartOfVirtualObject(node.parent!)
+        if let parent = node.parent {
+            return isNodePartOfVirtualObject(parent)
         }
 
         return false
@@ -113,8 +102,8 @@ extension SCNNode {
             return canReact
         }
 
-        if parent != nil {
-            return parent!.reactsToScale()
+        if let parent = parent {
+            return parent.reactsToScale()
         }
 
         return nil
