@@ -5,7 +5,7 @@
 
 ## Preview
 
-[Preview](https://github.com/MaatheusGois/ARKitLocation/assets/31082311/2d635225-5221-4900-9171-6d24d4b97630)
+[Preview](https://github.com/MaatheusGois/ARKitFocus/assets/31082311/2d635225-5221-4900-9171-6d24d4b97630)
 
 ## Features
 
